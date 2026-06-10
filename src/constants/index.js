@@ -70,7 +70,7 @@ const dockApps = [
     id: "trash",
     name: "Archive", // was "Trash"
     icon: "trash.png",
-    canOpen: false,
+    canOpen: true,
   },
 ];
 
@@ -162,26 +162,31 @@ const photosLinks = [
     id: 1,
     icon: "/icons/gicon1.svg",
     title: "Library",
+    category: "library",
   },
   {
     id: 2,
     icon: "/icons/gicon2.svg",
     title: "Memories",
+    category: "memories",
   },
   {
     id: 3,
     icon: "/icons/file.svg",
     title: "Places",
+    category: "places",
   },
   {
     id: 4,
     icon: "/icons/gicon4.svg",
     title: "People",
+    category: "people",
   },
   {
     id: 5,
     icon: "/icons/gicon5.svg",
     title: "Favorites",
+    category: "favorites",
   },
 ];
 
@@ -189,18 +194,28 @@ const gallery = [
   {
     id: 1,
     img: "/images/gal1.png",
+    title: "Library Stacks",
+    category: "library",
+    favorite: true,
   },
   {
     id: 2,
     img: "/images/gal2.png",
+    title: "Memory Lane",
+    category: "memories",
   },
   {
     id: 3,
     img: "/images/gal3.png",
+    title: "City View",
+    category: "places",
+    favorite: true,
   },
   {
     id: 4,
     img: "/images/gal4.png",
+    title: "Friendship",
+    category: "people",
   },
 ];
 
@@ -229,7 +244,7 @@ const WORK_LOCATION = {
       icon: "/images/folder.png",
       kind: "folder",
       position: "top-10 left-5", // icon position inside Finder
-      windowPosition: "top-[5vh] left-5", // optional: Finder window position
+      windowPosition: "top-[5vh] left-30", // optional: Finder window position
       children: [
         {
           id: 1,
@@ -282,7 +297,7 @@ const WORK_LOCATION = {
       icon: "/images/folder.png",
       kind: "folder",
       position: "top-52 right-80",
-      windowPosition: "top-[20vh] left-7",
+      windowPosition: "top-[20vh] right-20",
       children: [
         {
           id: 1,
