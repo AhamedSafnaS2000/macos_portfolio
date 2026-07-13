@@ -1,92 +1,90 @@
 import dayjs from "dayjs";
+import { Wifi, BatteryFull } from "lucide-react";
 import MobileHomeBar from "../components/MobileHomeBar.jsx";
+import VariableWeightText from "#components/VariableWeightText.jsx";
 
-const HOME_APPS = [
-  { id: "finder",   name: "Portfolio", icon: "/images/finder.png",   screen: "work"     },
-  { id: "safari",   name: "Articles",  icon: "/images/safari.png",   screen: "safari"   },
-  { id: "photos",   name: "Gallery",   icon: "/images/photos.png",   screen: "photos"   },
-  { id: "contact",  name: "Contact",   icon: "/images/contact.png",  screen: "contact"  },
-  { id: "terminal", name: "Skills",    icon: "/images/terminal.png", screen: "terminal" },
-  { id: "trash",    name: "Archive",   icon: "/images/trash.png",    screen: "work", screenData: { tab: "trash" } },
+// Two apps shown top-left. Notes -> resume. `scale` compensates for PNG padding (1 = full-bleed).
+const TOP_APPS = [
+  { id: "note", name: "Notes", icon: "/images/Option.png", screen: "resume", scale: 0.9 },
+  { id: "terminal", name: "Skills", icon: "/images/terminal.png", screen: "terminal", scale: 1.18 },
 ];
+
+const DOCK_APPS = [
+  { id: "finder", name: "Portfolio", icon: "/images/finder.png", screen: "work", scale: 1.12 },
+  { id: "safari", name: "Articles", icon: "/images/safari.png", screen: "safari", scale: 1.1 },
+  { id: "photos", name: "Gallery", icon: "/images/photos.png", screen: "photos", scale: 1 },
+  { id: "contact", name: "Contact", icon: "/images/contact.png", screen: "contact", scale: 1.14 },
+];
+
+const AppIcon = ({ app, size = "size-16" }) => (
+  <div className={`${size} overflow-hidden rounded-2xl shadow-lg`}>
+    <img
+      src={app.icon}
+      alt={app.name}
+      style={{ transform: `scale(${app.scale ?? 1})` }}
+      className="size-full object-cover"
+    />
+  </div>
+);
 
 const MobileHome = ({ onNavigate }) => {
   return (
-    <div className="flex h-full flex-col overflow-hidden">
+    <div className="relative flex h-dvh flex-col text-white select-none">
       {/* Status bar */}
-      <div className="flex items-center justify-between px-6 pt-4 pb-2">
-        <time className="text-base font-semibold text-white drop-shadow">
-          {dayjs().format("h:mm")}
-        </time>
+      <div className="relative flex items-center justify-between px-6 pt-3">
+        <span className="text-sm font-semibold">{dayjs().format("h:mm A")}</span>
+        <div className="absolute left-1/2 top-2 h-7 w-32 -translate-x-1/2 rounded-full bg-black" />
         <div className="flex items-center gap-1.5">
-          <div className="h-2.5 w-3.5 rounded-sm border border-white/80 bg-white/90" />
-          <div className="text-white text-xs">●●</div>
+          <Wifi size={16} strokeWidth={2} />
+          <BatteryFull size={20} strokeWidth={2} />
         </div>
       </div>
 
-      {/* Date */}
-      <div className="px-6 pb-6">
-        <p className="text-4xl font-light text-white drop-shadow">
-          {dayjs().format("dddd")}
-        </p>
-        <p className="text-white/80 text-sm mt-1 drop-shadow">
-          {dayjs().format("MMMM D")}
-        </p>
+      {/* Top-left app icons */}
+      <div className="flex gap-5 px-6 pt-4">
+        {TOP_APPS.map((app) => (
+          <button
+            key={app.id}
+            type="button"
+            onClick={() => onNavigate(app.screen)}
+            className="transition-transform active:scale-95"
+          >
+            <AppIcon app={app} />
+          </button>
+        ))}
       </div>
 
-      {/* App grid */}
-      <div className="flex-1 px-6">
-        <div className="grid grid-cols-4 gap-x-4 gap-y-5">
-          {HOME_APPS.map((app) => (
-            <button
-              key={app.id}
-              type="button"
-              onClick={() => onNavigate(app.screen, app.screenData)}
-              className="flex flex-col items-center gap-1.5 active:scale-95 transition-transform"
-            >
-              <div className="w-14 h-14 rounded-[14px] overflow-hidden shadow-lg">
-                <img
-                  src={app.icon}
-                  alt={app.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <span className="text-xs text-white font-medium drop-shadow text-center leading-tight">
-                {app.name}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Search bar */}
-      <div className="px-6 pb-3">
-        <button
-          type="button"
-          className="w-full flex items-center justify-center gap-2 rounded-full bg-white/20 backdrop-blur-xl py-2.5 px-4"
-        >
-          <span className="text-white/80 text-sm">🔍 Search</span>
-        </button>
+      {/* Hero — animates on touch drag (and mouse hover) */}
+      <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
+        <VariableWeightText
+          text="Hey, I'm Ahamed Safnas! Welcome to my"
+          className="font-georama text-lg text-gray-200"
+          min={100}
+          max={400}
+          base={100}
+        />
+        <VariableWeightText
+          as="h1"
+          text="Portfolio!"
+          className="font-georama mt-2 text-6xl italic text-gray-100"
+          min={400}
+          max={900}
+          base={400}
+        />
       </div>
 
       {/* Dock */}
       <div className="px-4 pb-2">
-        <div className="rounded-[26px] bg-white/20 backdrop-blur-xl p-3 flex items-center justify-around">
-          <button
-            type="button"
-            onClick={() => onNavigate("work")}
-            className="flex flex-col items-center gap-1 active:scale-95 transition-transform"
-          >
-            <div className="w-14 h-14 rounded-[14px] overflow-hidden shadow-lg">
-              <img
-                src="/images/finder.png"
-                alt="Portfolio"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </button>
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="w-14 h-14 rounded-[14px]" />
+        <div className="flex items-center justify-around gap-2 rounded-3xl bg-white/15 px-4 py-3 backdrop-blur-xl">
+          {DOCK_APPS.map((app) => (
+            <button
+              key={app.id}
+              type="button"
+              onClick={() => onNavigate(app.screen)}
+              className="transition-transform active:scale-95"
+            >
+              <AppIcon app={app} size="size-14" />
+            </button>
           ))}
         </div>
       </div>

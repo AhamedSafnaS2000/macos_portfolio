@@ -385,3 +385,107 @@ body {
     }
   }
 }
+
+/* ---- Breakpoints aligned to useDeviceType.js ---- */
+@theme {
+  --breakpoint-sm: 768px; /* mobile boundary matches JS MOBILE_MAX + 1 */
+}
+
+/* ---- Boot / loading screen ---- */
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  color: #fff;
+}
+
+.boot-logo {
+  width: 84px;
+  height: 84px;
+  opacity: 0;
+  animation: boot-logo-in 0.9s ease forwards;
+}
+main[data-device="desktop"] .boot-logo { width: 96px; height: 96px; }
+
+@keyframes boot-logo-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* macOS determinate progress bar */
+.boot-bar {
+  width: 220px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+.boot-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #fff;
+  transition: width 0.2s linear;
+}
+
+/* iOS / iPadOS 12-spoke spinner */
+.boot-spinner {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.boot-spinner--tablet { width: 48px; height: 48px; }
+.boot-spinner span {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 3px;
+  height: 10px;
+  margin-left: -1.5px;
+  border-radius: 999px;
+  background: #fff;
+  transform-origin: 50% 20px;
+  opacity: 0.15;
+  animation: boot-spin 1s linear infinite;
+  animation-delay: calc(var(--i, 0) * 0.083s - 1s);
+}
+.boot-spinner--tablet span { transform-origin: 50% 24px; height: 12px; }
+
+@keyframes boot-spin {
+  0%   { opacity: 1; }
+  100% { opacity: 0.15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-logo,
+  .boot-spinner span { animation: none; }
+  .boot-logo { opacity: 1; }
+}
+
+/* ---- Tablet: keep the OS look, drop free-drag chaos ---- */
+main[data-device="tablet"] #safari,
+main[data-device="tablet"] #terminal,
+main[data-device="tablet"] #contact,
+main[data-device="tablet"] #photos,
+main[data-device="tablet"] #resume,
+main[data-device="tablet"] #finder,
+main[data-device="tablet"] #txtfile,
+main[data-device="tablet"] #imgfile {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+  max-width: 92vw;
+  max-height: 82vh;
+  overflow: auto;
+}
+
+/* Touch targets: no accidental text-selection / scroll jank on the desktop shell */
+main[data-device="tablet"] #dock .dock-icon,
+main[data-device="tablet"] #home li { touch-action: manipulation; }
