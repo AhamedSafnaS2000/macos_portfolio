@@ -1,4 +1,4 @@
-import { ChevronLeft, X } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import MobileHomeBar from "../components/MobileHomeBar.jsx";
 

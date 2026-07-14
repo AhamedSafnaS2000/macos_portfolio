@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Download } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import MobileHeader from "../components/MobileHeader.jsx";
@@ -13,6 +14,18 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
 const RESUME_FILE = "/files/resume.pdf";
 
 const MobileResumeView = ({ onBack }) => {
+  const [pageWidth, setPageWidth] = useState(Math.min(window.innerWidth - 24, 900));
+
+  useEffect(() => {
+    const update = () => setPageWidth(Math.min(window.innerWidth - 24, 900));
+    window.addEventListener("resize", update);
+    window.addEventListener("orientationchange", update);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("orientationchange", update);
+    };
+  }, []);
+
   return (
     <div className="flex h-dvh flex-col bg-white">
       <MobileHeader
@@ -27,7 +40,7 @@ const MobileResumeView = ({ onBack }) => {
 
       <div className="flex-1 overflow-auto p-3">
         <Document file={RESUME_FILE}>
-          <Page pageNumber={1} width={Math.min(window.innerWidth - 24, 900)} />
+          <Page pageNumber={1} width={pageWidth} />
         </Document>
       </div>
 

@@ -18,23 +18,25 @@ const App = () => {
     <main data-device={device}>
       {!booted && <BootScreen onDone={() => setBooted(true)} />}
 
-      {device === "mobile" ? (
-        <MobileApp />
-      ) : (
-        <>
-          <Navbar />
-          <Welcome />
-          <Home />
-          <Safari />
-          <Terminal />
-          <Resume />
-          <Finder />
-          <Text />
-          <Image />
-          <Contact />
-          <Photos />
-          <Dock />
-        </>
+      {booted && (
+        device === "mobile" ? (
+          <MobileApp />
+        ) : (
+          <>
+            <Navbar />
+            <Welcome />
+            <Home />
+            <Safari />
+            <Terminal />
+            <Resume />
+            <Finder />
+            <Text />
+            <Image />
+            <Contact />
+            <Photos />
+            <Dock />
+          </>
+        )
       )}
     </main>
   );

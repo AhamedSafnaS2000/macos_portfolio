@@ -37,7 +37,7 @@ const MobileTerminal = ({ onBack }) => {
           <div className="space-y-1.5">
             <p className="flex items-center gap-2 text-[#00a154] text-xs">
               <Check size={14} />
-              <span>5 of 5 stacks loaded successfully (100%)</span>
+              <span>{`${techStack.length} of ${techStack.length} stacks loaded successfully (100%)`}</span>
             </p>
             <p className="flex items-center gap-2 text-gray-800 text-xs">
               <Flag size={12} fill="currentColor" />

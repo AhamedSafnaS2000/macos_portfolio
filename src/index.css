@@ -433,6 +433,12 @@ main[data-device="desktop"] .boot-logo { width: 96px; height: 96px; }
   transition: width 0.2s linear;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .boot-bar-fill {
+    transition: none;
+  }
+}
+
 /* iOS / iPadOS 12-spoke spinner */
 .boot-spinner {
   position: relative;

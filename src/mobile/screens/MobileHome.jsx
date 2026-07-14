@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 import { Wifi, BatteryFull } from "lucide-react";
 import MobileHomeBar from "../components/MobileHomeBar.jsx";
 import VariableWeightText from "#components/VariableWeightText.jsx";
@@ -28,11 +29,18 @@ const AppIcon = ({ app, size = "size-16" }) => (
 );
 
 const MobileHome = ({ onNavigate }) => {
+  const [time, setTime] = useState(dayjs());
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(dayjs()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="relative flex h-dvh flex-col text-white select-none">
       {/* Status bar */}
       <div className="relative flex items-center justify-between px-6 pt-3">
-        <span className="text-sm font-semibold">{dayjs().format("h:mm A")}</span>
+        <span className="text-sm font-semibold">{time.format("h:mm A")}</span>
         <div className="absolute left-1/2 top-2 h-7 w-32 -translate-x-1/2 rounded-full bg-black" />
         <div className="flex items-center gap-1.5">
           <Wifi size={16} strokeWidth={2} />

@@ -7,12 +7,11 @@ const MobileImageView = ({ file, onBack }) => {
   return (
     <div className="flex h-full flex-col bg-black">
       <div className="h-3 bg-black" />
-      <div className="bg-black">
-        <MobileHeader
-          title={file?.name ?? "Image"}
-          onBack={onBack}
-        />
-      </div>
+      <MobileHeader
+        title={file?.name ?? "Image"}
+        onBack={onBack}
+        dark
+      />
 
       <div className="flex-1 flex items-center justify-center p-4 overflow-hidden">
         {src ? (

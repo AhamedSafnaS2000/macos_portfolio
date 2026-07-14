@@ -4,7 +4,21 @@ import useDeviceType from "#hooks/useDeviceType.js";
 import AppleLogo from "./boot/AppleLogo.jsx";
 
 const MIN_DURATION = 2200; // ms floor so it reads like a real boot
-const ASSETS = ["/images/wallpaper.png"]; // above-the-fold critical assets
+const ASSETS = [
+  "/images/wallpaper.png",
+  "/images/logo.svg",
+  "/images/folder.png",
+  "/images/finder.png",
+  "/images/safari.png",
+  "/images/photos.png",
+  "/images/contact.png",
+  "/images/terminal.png",
+  "/images/trash.png",
+  "/icons/wifi.svg",
+  "/icons/search.svg",
+  "/icons/user.svg",
+  "/icons/mode.svg",
+]; // above-the-fold critical assets
 
 const preload = (src) =>
   new Promise((res) => {
@@ -20,16 +34,19 @@ const BootScreen = ({ onDone }) => {
 
   useEffect(() => {
     let finished = false;
+    let cancelled = false;
+    let rafId = 0;
+    let tween = null;
     const start = performance.now();
 
     // Smooth determinate progress for the macOS bar (creeps to 95%)
     const tick = () => {
-      if (finished) return;
+      if (finished || cancelled) return;
       const pct = Math.min(95, ((performance.now() - start) / MIN_DURATION) * 100);
       setProgress(pct);
-      if (pct < 95) requestAnimationFrame(tick);
+      if (pct < 95) rafId = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
 
     const ready = Promise.all([
       ...ASSETS.map(preload),
@@ -38,10 +55,11 @@ const BootScreen = ({ onDone }) => {
     ]);
 
     ready.then(() => {
+      if (cancelled) return;
       finished = true;
       setProgress(100);
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      gsap.to(rootRef.current, {
+      tween = gsap.to(rootRef.current, {
         opacity: 0,
         duration: reduce ? 0.01 : 0.6,
         delay: reduce ? 0 : 0.25,
@@ -49,6 +67,13 @@ const BootScreen = ({ onDone }) => {
         onComplete: onDone,
       });
     });
+
+    return () => {
+      cancelled = true;
+      finished = true;
+      cancelAnimationFrame(rafId);
+      tween?.kill();
+    };
   }, [onDone]);
 
   return (

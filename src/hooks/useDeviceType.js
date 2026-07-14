@@ -13,7 +13,7 @@ const compute = () => {
   if (w <= MOBILE_MAX) return "mobile";
   if (w <= TABLET_MAX) return "tablet";
   // Wide viewport but a touch-primary device (e.g. iPad landscape) -> tablet
-  if ((coarse || touch > 1) && w <= 1366) return "tablet";
+  if (coarse && w <= 1366) return "tablet";
   return "desktop";
 };
 
